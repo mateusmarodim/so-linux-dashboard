@@ -11,7 +11,7 @@ import platform
 import psutil
 import os
 import subprocess
-import subprocess
+from sysinfo import *
 
 app = Dash(__name__)
 

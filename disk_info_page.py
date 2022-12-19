@@ -12,8 +12,15 @@ def render_disk_info_page(disk_info):
     
     return html.Div(
         [
-            html.Div(render_disk_info_text(disk_info), className="disk-info-text"),
-            html.Div(render_disk_info_graphs(devices, disk_percentages), className="disk-info-graphs", style={"margin-top": "50px"})
+            html.H5("Informações de disco", style={"margin-bottom": "40px"}),
+            html.Div(render_disk_info_text(disk_info), id="disk-text"),
+            html.Div(render_disk_info_graphs(devices, disk_percentages), id="disk-graphs", style={"margin-top": "50px"}),
+            dcc.Interval(
+                id='disk-interval',
+                disabled=False,
+                interval=1 * 500,
+                n_intervals=0 # milliseconds
+            )
         ],
         className="disk-info"
     )    
@@ -22,13 +29,13 @@ def render_disk_info_text(disk_info):
     rows = []
     rows.append(
         dbc.Row([
-            dbc.Col(html.P("Dispositivo")),
-            dbc.Col(html.P("Ponto de montagem")),
-            dbc.Col(html.P("Tipo")),
-            dbc.Col(html.P("Total(MB)")),
-            dbc.Col(html.P("Usado (MB)")),
-            dbc.Col(html.P("Usado (%)")),
-            dbc.Col(html.P("Livre (MB)"))
+            dbc.Col(html.P("Dispositivo", style={"font-weight": "bold"})),
+            dbc.Col(html.P("Ponto de montagem", style={"font-weight": "bold"})),
+            dbc.Col(html.P("Tipo", style={"font-weight": "bold"})),
+            dbc.Col(html.P("Total(MB)", style={"font-weight": "bold"})),
+            dbc.Col(html.P("Usado (MB)", style={"font-weight": "bold"})),
+            dbc.Col(html.P("Usado (%)", style={"font-weight": "bold"})),
+            dbc.Col(html.P("Livre (MB)", style={"font-weight": "bold"}))
         ]))
     for i in range(len(disk_info["device"])):
         rows.append(
@@ -47,7 +54,7 @@ def render_disk_info_graphs(devices, percentages):
     rows = []
     row = []
     for i in range(len(devices)):
-        row.append(dbc.Col(html.P(devices[i], style={"text-align": "center"})))
+        row.append(dbc.Col(html.P(devices[i], style={"text-align": "center", "font-weight": "bold"})))
     rows.append(dbc.Row(row))
     
     row = []

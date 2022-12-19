@@ -1,5 +1,6 @@
 from threading import Thread
 import psutil 
+from time import sleep
 
 
 class DiskMonitor(Thread):
@@ -8,11 +9,11 @@ class DiskMonitor(Thread):
         super().__init__()
         self.partitions = psutil.disk_partitions()
         self.is_running = False
-        self.start()
     
     def run(self):
         while(True):
             self.partitions = psutil.disk_partitions()
+            sleep(0.5)
 
     
     def get_size(self,bytes, suffix="B"):

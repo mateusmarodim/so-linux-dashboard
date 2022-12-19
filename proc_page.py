@@ -10,17 +10,35 @@ def render_proc_page(proc):
 
     return html.Div(
         [
-            html.Div(render_proc(proc), className="proc-text"),
+            html.Div(render_proc(proc), id="proc-text"),
+            dcc.Interval(
+                id='ps-interval',
+                disabled=False,
+                interval=1 * 500,
+                n_intervals=0 # milliseconds
+            )
         ],
         className="proc"
     )    
 
-def render_proc(proc):
-    processo = proc.split('\n')
+def render_proc(proc: dict):
+    processo: list = proc["ps"].split('\n')
+    comando: list = proc["comm"].split('\n')
     rows = []
     row = []
-    for i in range(len(processo)):
-        proc_col = str(processo[i]).split(' ')
+    header = str(processo[0]).split(' ')
+    try:
+        while True:
+            header.remove('')
+    except ValueError:
+        pass
+    header.append(comando[0])
+    for k in range(len(header)):
+        row.append(dbc.Col(html.H5(header[k].replace(' ', ''), style={"font-weight": "bold"})))
+    rows.append(dbc.Row(row))
+    row = []
+    for i in range(len(processo)-2):
+        proc_col = str(processo[i+1]).split(' ')
         try:
             while True:
                 proc_col.remove('')
@@ -28,6 +46,7 @@ def render_proc(proc):
             pass
         for j in range(len(proc_col)):
             row.append(dbc.Col(html.P(proc_col[j].replace(' ', ''))))
+        row.append(dbc.Col(html.P(comando[i+1])))
         rows.append(dbc.Row(row))
         row = []
     return rows

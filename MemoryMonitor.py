@@ -1,5 +1,6 @@
 from threading import Thread
 import psutil 
+from time import sleep
 
 class MemoryMonitor(Thread):
 
@@ -11,9 +12,11 @@ class MemoryMonitor(Thread):
 
     
     def run(self):
+        print('oie')
         while(True):
             self.memory = psutil.virtual_memory()
             self.swap = psutil.swap_memory()
+            sleep(0.5)
 
     def get_size(bytes, suffix="B"):
 

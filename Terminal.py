@@ -9,10 +9,13 @@ class Terminal(Thread):
         self.terminal_lines = []
         self.result = ""
         self.is_running = False
+        self.process_list = {"ps":self.execute_command("ps ax -o user,pid,pcpu,pmem,tty,stat,start,time --sort pcpu"), "comm":self.execute_command("ps ax -o comm --sort user")}
         
     def run(self):
         while(True):
-            sleep(5)
+            self.update_process_list()
+            sleep(0.5)
+            
     def execute_command(self, command):
         self.command = command
         command_process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
@@ -27,6 +30,12 @@ class Terminal(Thread):
         self.is_running = True
         self.start()
         
+    def update_process_list(self):
+        self.process_list = {"ps":self.execute_command("ps ax -o user,pid,pcpu,pmem,tty,stat,start,time --sort -pcpu"), "comm":self.execute_command("ps ax -o comm --sort user")}
+
     def get_process_list(self):
-        return self.execute_command("ps -eo pid,user,args,pcpu,%mem,s,comm,cputime,ni,nlwp --sort user")
+        return self.process_list
+
+    def open_terminal(self):
+        self.execute_command("gnome-terminal")
         

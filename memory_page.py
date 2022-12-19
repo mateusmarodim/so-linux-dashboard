@@ -9,8 +9,15 @@ from MemoryMonitor import *
 def render_memory_page(memory_info):
     return html.Div(
         [
-            html.Div(render_memory_text(memory_info), className="memory-info-text"),
-            html.Div(render_memory_graphs(memory_info), className="memory-info-graphs")
+            html.H5("Informações de Memória", style={"margin-bottom": "40px"}),
+            html.Div(render_memory_text(memory_info), id="memory-text"),
+            html.Div(render_memory_graphs(memory_info), id="memory-graphs"),
+            dcc.Interval(
+                id='mem-interval',
+                disabled=False,
+                interval=1 * 500,
+                n_intervals=0 # milliseconds
+            )
         ],
         className="memory-info"
     )

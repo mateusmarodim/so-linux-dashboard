@@ -12,21 +12,18 @@ class NetworkMonitor:
         netmask = []
         Broadcast = []
         if_addrs = psutil.net_if_addrs()
-        i = 0
         for interface_name, interface_addresses in if_addrs.items():
             for address in interface_addresses:
                 if str(address.family) == 'AddressFamily.AF_INET':
-                    addressX[i] = (f"IP Adress: {address.address}")
-                    netmask[i] = (f"Netmask: {address.netmask}")
-                    Broadcast[i] =(f"Broadcast IP: {address.broadcast}")
-                    interface[i] = (f"Interface: {interface_name} ")
-                    i = i+1
+                    addressX.append(f"IP Adress: {address.address}")
+                    netmask.append(f"Netmask: {address.netmask}")
+                    Broadcast.append(f"Broadcast IP: {address.broadcast}")
+                    interface.append(f"Interface: {interface_name} ")
                 elif str(address.family) == 'AddressFamily.AF_PACKET':
-                    addressX[i] = (f"MAC Adress: {address.address}")
-                    netmask[i] = (f"Netmask: {address.netmask}")
-                    Broadcast[i] =(f"Broadcast MAC: {address.broadcast}")
-                    interface[i] = (f"Interface: {interface_name} ")
-                    i = i+1
+                    addressX.append (f"MAC Adress: {address.address}")
+                    netmask.append(f"Netmask: {address.netmask}")
+                    Broadcast.append(f"Broadcast MAC: {address.broadcast}")
+                    interface.append(f"Interface: {interface_name} ")
         return {
             "interface": interface,
             "adress": addressX,
